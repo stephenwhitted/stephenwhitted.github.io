@@ -20,6 +20,7 @@ function App() {
   const fetchWeather = async (query) => {
     setLoading(true);
     setError('');
+    console.log("Fetching weather for query:", query); // Debugging statement
     try {
       const weatherResponse = await axios.get(`https://api.openweathermap.org/data/2.5/weather?${query}&appid=${import.meta.env.VITE_API_KEY}`);
       const forecastResponse = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?${query}&appid=${import.meta.env.VITE_API_KEY}`);
@@ -29,6 +30,7 @@ function App() {
       setWeatherCondition(weatherResponse.data.weather[0].main.toLowerCase());
       setShowMap(true); // Show the map after fetching weather
     } catch (err) {
+      console.error('Failed to fetch weather data:', err); // Debugging statement
       setError('Failed to fetch weather data. Please check your input and try again.');
     } finally {
       setLoading(false);
@@ -37,6 +39,9 @@ function App() {
 
   const setDayNightMode = (sunrise, sunset) => {
     const currentTime = Math.floor(Date.now() / 1000);
+    console.log("Current Time:", currentTime); // Debugging statement
+    console.log("Sunrise Time:", sunrise); // Debugging statement
+    console.log("Sunset Time:", sunset); // Debugging statement
     setIsDayTime(currentTime >= sunrise && currentTime <= sunset);
   };
 
@@ -52,7 +57,7 @@ function App() {
         <img src="/us.svg" alt="US Map" />
       </div>
       <Header />
-      <h1>Weather App</h1>
+      <h1>Know Your Local Forecast</h1>
       {loading && <Loader />}
       {error && <Error message={error} />}
       <div className="content-container">

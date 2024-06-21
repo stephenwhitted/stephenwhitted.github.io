@@ -8,9 +8,11 @@ const WeatherForm = ({ fetchWeather }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Form submitted"); // Debugging statement
     const query = city && state
       ? `q=${city},${state}`
       : `lat=${latitude}&lon=${longitude}`;
+    console.log("Query:", query); // Debugging statement
     fetchWeather(query);
   };
 
