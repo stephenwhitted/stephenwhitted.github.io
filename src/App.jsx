@@ -7,8 +7,12 @@ import WeatherForm from './components/WeatherForm';
 import WeatherDisplay from './components/WeatherDisplay';
 import Loader from './components/Loader';
 import Error from './components/Error';
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [weather, setWeather] = useState(null);
+  const [isDayTime, setIsDayTime] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   return (
     <>
