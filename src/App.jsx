@@ -15,6 +15,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [weatherCondition, setWeatherCondition] = useState('');
+  const [showMap, setShowMap] = useState(false);
 
   const fetchWeather = async (query) => {
     setLoading(true);
@@ -26,6 +27,7 @@ function App() {
       setForecast(forecastResponse.data.list.slice(0, 8)); // Get the next 24 hours (3-hour intervals)
       setDayNightMode(weatherResponse.data.sys.sunrise, weatherResponse.data.sys.sunset);
       setWeatherCondition(weatherResponse.data.weather[0].main.toLowerCase());
+      setShowMap(true); // Show the map after fetching weather
     } catch (err) {
       setError('Failed to fetch weather data. Please check your input and try again.');
     } finally {
@@ -45,17 +47,21 @@ function App() {
   }, [weather]);
 
   return (
-    <div className={`App ${isDayTime ? 'day' : 'night'} ${weatherCondition}`}>
+    <div className={`App ${isDayTime ? 'day' : 'night'} ${weatherCondition} ${showMap ? 'show-svg' : ''}`}>
+      <div className="svg-overlay">
+        <img src="/us.svg" alt="US Map" />
+      </div>
       <Header />
+      <h1>Weather App</h1>
       {loading && <Loader />}
       {error && <Error message={error} />}
       <div className="content-container">
         <div className="form-container">
           <WeatherForm fetchWeather={fetchWeather} />
         </div>
-        <div className="map-container">
-          {weather && <WeatherDisplay weather={weather} forecast={forecast} />}
-        </div>
+        {weather && <div className="map-container">
+          <WeatherDisplay weather={weather} forecast={forecast} />
+        </div>}
       </div>
       <Footer />
     </div>
