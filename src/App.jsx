@@ -49,8 +49,14 @@ function App() {
       <Header />
       {loading && <Loader />}
       {error && <Error message={error} />}
-      {weather && <WeatherDisplay weather={weather} forecast={forecast} />}
-      <WeatherForm fetchWeather={fetchWeather} />
+      <div className="content-container">
+        <div className="form-container">
+          <WeatherForm fetchWeather={fetchWeather} />
+        </div>
+        <div className="map-container">
+          {weather && <WeatherDisplay weather={weather} forecast={forecast} />}
+        </div>
+      </div>
       <Footer />
     </div>
   );
