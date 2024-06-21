@@ -13,6 +13,7 @@ const WeatherForm = ({ fetchWeather }) => {
       : `lat=${latitude}&lon=${longitude}`;
     fetchWeather(query);
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <h2>Get Weather by City and State</h2>
