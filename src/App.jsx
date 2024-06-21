@@ -1,8 +1,12 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './App.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import WeatherForm from './components/WeatherForm';
+import WeatherDisplay from './components/WeatherDisplay';
+import Loader from './components/Loader';
+import Error from './components/Error';
 function App() {
   const [count, setCount] = useState(0)
 
