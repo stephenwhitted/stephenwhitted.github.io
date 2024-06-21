@@ -14,30 +14,42 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const fetchWeather = async (query) => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?${query}&appid=${import.meta.env.VITE_API_KEY}`);
+      setWeather(response.data);
+      setDayNightMode(response.data.sys.sunrise, response.data.sys.sunset);
+    } catch (err) {
+      setError('Failed to fetch weather data. Please check your input and try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const setDayNightMode = (sunrise, sunset) => {
+    const currentTime = Math.floor(Date.now() / 1000);
+    setIsDayTime(currentTime >= sunrise && currentTime <= sunset);
+  };
+
+  useEffect(() => {
+    if (weather) {
+      setDayNightMode(weather.sys.sunrise, weather.sys.sunset);
+    }
+  }, [weather]);
+
+
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className={`App ${isDayTime ? 'day' : 'night'}`}>
+      <Header />
+      <WeatherForm fetchWeather={fetchWeather} />
+      {loading && <Loader />}
+      {error && <Error message={error} />}
+      {weather && <WeatherDisplay weather={weather} />}
+      <Footer />
+    </div>
+  );
 }
 
-export default App
+export default App;
