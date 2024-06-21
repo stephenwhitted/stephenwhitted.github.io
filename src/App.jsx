@@ -39,7 +39,6 @@ function App() {
     }
   }, [weather]);
 
-
   return (
     <div className={`App ${isDayTime ? 'day' : 'night'}`}>
       <Header />
